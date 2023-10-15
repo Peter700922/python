@@ -203,21 +203,38 @@ global y
 x =([])
 y =([]) 
 seco = 0.0
+count = 3
 def lib() : 
     global seco
-    f = Figure(figsize=(2.5,2),dpi=85)
-    a = f.add_subplot(111)
-    x.append(float(seco))
-    y.append(80.0)
-    a.plot(x,y)
-    canvas =FigureCanvasTkAgg(f, master = root )
-    canvas.get_tk_widget().place(x=130 ,y =75)
-    seco+=1.0
+    global count
+    if count == 0 :
+        f = Figure(figsize=(2.5,2),dpi=85)
+        a = f.add_subplot(111)
+        x.append(float(seco))
+        y.append(80.0)
+        a.plot(x,y)
+        canvas =FigureCanvasTkAgg(f, master = root )
+        canvas.get_tk_widget().place(x=130 ,y =75)
+        seco+=1.0
+    countSec['text'] = count
+    countSec['bg'] = 'orange'
+    countSec['font']=('Arial',14,'bold')
+    if count == 0:
+        count = 3
+    else :
+        count -=1
+b = 1   
 def thread() :
     #另外執行圖形
-    a = RepeatingTimer(3.0, lib)
-    a.start()
-     
+    global a
+    global b
+    if b==1:
+        a = RepeatingTimer(1.0, lib)
+        a.start()
+def stopLib ():
+    global b
+    b = 0
+    a.killed = True
 #UI部分
 # Show image using label 
 label1 = tk.Label(root, image = tk_image) 
@@ -251,5 +268,8 @@ tk.Button(root, text = "產生報表", command = report,font=('Arial',14,'bold')
 reportBar = tk.Label(text='',font=('Arial',14,'bold'))
 reportBar.place(x=120, y=350)
 tk.Button(root, text = "產生圖表", command = thread,font=('Arial',14,'bold'),bg = 'lightyellow').place(x=10, y=80)  
+tk.Button(root, text = "關閉圖表", command = stopLib,font=('Arial',10,'bold'),bg = 'red').place(x=10, y=120) 
+countSec = tk.Label(text='',font=('Arial',14,'bold'))
+countSec.place(x=80, y=120)
 showTime()
 root.mainloop()
