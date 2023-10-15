@@ -217,24 +217,19 @@ def lib() :
         canvas.get_tk_widget().place(x=130 ,y =75)
         seco+=1.0
     countSec['text'] = count
-    countSec['bg'] = 'orange'
+    countSec['bg'] = 'red'
     countSec['font']=('Arial',14,'bold')
     if count == 0:
         count = 3
     else :
-        count -=1
-b = 1   
+        count -=1  
 def thread() :
     #另外執行圖形
     global a
-    global b
-    if b==1:
-        a = RepeatingTimer(1.0, lib)
-        a.start()
+    a = RepeatingTimer(1.0, lib)
+    a.start()
 def stopLib ():
-    global b
-    b = 0
-    a.killed = True
+    a.cancel()
 #UI部分
 # Show image using label 
 label1 = tk.Label(root, image = tk_image) 
@@ -270,6 +265,6 @@ reportBar.place(x=120, y=350)
 tk.Button(root, text = "產生圖表", command = thread,font=('Arial',14,'bold'),bg = 'lightyellow').place(x=10, y=80)  
 tk.Button(root, text = "關閉圖表", command = stopLib,font=('Arial',10,'bold'),bg = 'red').place(x=10, y=120) 
 countSec = tk.Label(text='',font=('Arial',14,'bold'))
-countSec.place(x=80, y=120)
+countSec.place(x=100, y=120)
 showTime()
 root.mainloop()
